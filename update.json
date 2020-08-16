@@ -1,10 +1,11 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/lucky-ore",
   "1.16.1": {
-    "1.0.0": "initial release" 
+    "1.0.0": "initial release",
+    "1.0.1": "fixed a crash - Mod Screen" 
   },
   "promos": {
-    "1.16.1-latest": "1.0.0",
-    "1.16.1-recommended": "1.0.0"
+    "1.16.1-latest": "1.0.1",
+    "1.16.1-recommended": "1.0.1"
   }
 }
