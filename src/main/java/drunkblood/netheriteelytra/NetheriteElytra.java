@@ -5,12 +5,7 @@ import drunkblood.netheriteelytra.item.NetheriteElytraItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -30,7 +25,7 @@ public class NetheriteElytra {
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	public static final RegistryObject<Item> NETHERITE_ELYTRA = ITEMS.register("netherite_elytra",
 			() -> new NetheriteElytraItem(new Item.Properties().maxDamage(540).group(ItemGroup.TRANSPORTATION)/* 540 */
-					.rarity(Rarity.UNCOMMON).func_234689_a_()));
+					.rarity(Rarity.UNCOMMON).isImmuneToFire()));
 	public static final RegistryObject<Item> NETHERITE_MEMBRANE = ITEMS.register("netherite_membrane",
 			() -> new Item(new Item.Properties().group(ItemGroup.BREWING)));
 

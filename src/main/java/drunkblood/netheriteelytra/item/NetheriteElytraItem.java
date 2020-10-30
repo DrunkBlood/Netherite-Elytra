@@ -9,13 +9,14 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class NetheriteElytraItem extends Item {
+public class NetheriteElytraItem extends ElytraItem {
 
 	public NetheriteElytraItem(Properties properties) {
 		super(properties);
