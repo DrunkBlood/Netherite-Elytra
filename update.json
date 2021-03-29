@@ -1,23 +1,5 @@
 {
-  "homepage": "https://www.curseforge.com/minecraft/mc-mods/lucky-ore",
-  "1.16.1": {
-    "1.0.0": "initial release",
-    "1.0.1": "fixed a crash - Mod Screen" 
-  },
-  "1.16.2": {
-  	"1.0.0": "initial port to 1.16.2",
-  	"1.0.1": "added German and Simplified Chinese support"
-  },
-  "1.16.3": {
-    "1.0.0": "initial port to 1.16.3",
-    "1.1.0": "Added armor stand rendering and polish translation by Jacobs-Develop"
-  },
-  "1.16.4": {
-    "1.0.0": "initial port to 1.16.4"
-  },
-  "1.16.5": {
-    "1.0.0": "initial port to 1.16.5"
-  },
+  "homepage": "https://www.curseforge.com/minecraft/mc-mods/netherite-elytra",
   "promos": {
     "1.16.1-latest": "1.0.1",
     "1.16.1-recommended": "1.0.1",
@@ -29,5 +11,24 @@
     "1.16.4-recommended": "1.0.0",
     "1.16.5-latest":"1.0.0",
     "1.16.5-recommended": "1.0.0"
+  },
+  "1.16.5": {
+    "1.0.0": "initial port to 1.16.5"
+  },
+  "1.16.4": {
+    "1.0.0": "initial port to 1.16.4"
+  },
+  "1.16.3": {
+    "1.0.0": "initial port to 1.16.3",
+    "1.1.0": "Added armor stand rendering and polish translation by Jacobs-Develop"
+  },
+  "1.16.2": {
+    "1.0.0": "initial port to 1.16.2",
+    "1.0.1": "added German and Simplified Chinese support"
+  },
+  "1.16.1": {
+    "1.0.0": "initial release",
+    "1.0.1": "fixed a crash - Mod Screen" 
   }
+
 }
