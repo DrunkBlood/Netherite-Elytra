@@ -4,8 +4,6 @@ import drunkblood.netheriteelytra.elytra.NetheriteElytraArmorStandLayer;
 import drunkblood.netheriteelytra.elytra.NetheriteElytraLayer;
 import drunkblood.netheriteelytra.item.NetheriteElytraItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.ArmorStandRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.ArmorStandArmorModel;
 import net.minecraft.client.world.ClientWorld;
@@ -45,12 +43,12 @@ public class NetheriteElytra {
 	private void onClientSetup(FMLClientSetupEvent event) {
 		registerElytraLayer();
 		// broken Property
-		ItemModelsProperties.func_239418_a_(NETHERITE_ELYTRA.get(), new ResourceLocation(MODID, "broken"),
+		ItemModelsProperties.registerProperty(NETHERITE_ELYTRA.get(), new ResourceLocation(MODID, "broken"),
 				new IItemPropertyGetter() {
 
 					@Override
 					public float call(ItemStack stack, ClientWorld arg1, LivingEntity arg2) {
-						return NetheriteElytraItem.isUsable(stack) ? 0 : 1;
+						return NetheriteElytraItem.isUseable(stack) ? 0 : 1;
 					}
 
 				});

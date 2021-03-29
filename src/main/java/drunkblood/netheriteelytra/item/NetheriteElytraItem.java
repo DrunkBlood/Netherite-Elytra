@@ -10,7 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ElytraItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -23,7 +22,7 @@ public class NetheriteElytraItem extends ElytraItem {
 		DispenserBlock.registerDispenseBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
 	}
 
-	public static boolean isUsable(ItemStack stack) {
+	public static boolean isUseable(ItemStack stack) {
 		return stack.getDamage() < stack.getMaxDamage() - 1;
 	}
 	/**
@@ -56,7 +55,7 @@ public class NetheriteElytraItem extends ElytraItem {
 
 	@Override
 	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
-		return NetheriteElytraItem.isUsable(stack);
+		return NetheriteElytraItem.isUseable(stack);
 	}
 
 	@Override
