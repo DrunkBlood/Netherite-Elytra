@@ -9,14 +9,15 @@
   	"1.0.1": "added German and Simplified Chinese support"
   },
   "1.16.3": {
-    "1.0.0": "initial port to 1.16.3"
+    "1.0.0": "initial port to 1.16.3",
+    "1.1.0": "Added armor stand rendering and polish translation by Jacobs-Develop"
   },
   "promos": {
     "1.16.1-latest": "1.0.1",
     "1.16.1-recommended": "1.0.1",
     "1.16.2-latest":"1.0.1",
     "1.16.2-recommended": "1.0.1",
-    "1.16.3-latest":"1.0.1",
-    "1.16.3-recommended": "1.0.1"
+    "1.16.3-latest":"1.1.0",
+    "1.16.3-recommended": "1.1.0"
   }
 }

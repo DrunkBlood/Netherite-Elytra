@@ -1,10 +1,17 @@
 package drunkblood.netheriteelytra;
 
+import drunkblood.netheriteelytra.elytra.NetheriteElytraArmorStandLayer;
 import drunkblood.netheriteelytra.elytra.NetheriteElytraLayer;
 import drunkblood.netheriteelytra.item.NetheriteElytraItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.ArmorStandRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.model.ArmorStandArmorModel;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -53,5 +60,10 @@ public class NetheriteElytra {
 	private void registerElytraLayer() {
 		Minecraft.getInstance().getRenderManager().getSkinMap().values()
 				.forEach(player -> player.addLayer(new NetheriteElytraLayer(player)));
+		ArmorStandEntity armorStandEntity = new ArmorStandEntity(EntityType.ARMOR_STAND, Minecraft.getInstance().world);
+		LivingRenderer<ArmorStandEntity, ArmorStandArmorModel> armorStandRenderer =
+				(LivingRenderer<ArmorStandEntity, ArmorStandArmorModel>)
+						Minecraft.getInstance().getRenderManager().getRenderer(armorStandEntity);
+		armorStandRenderer.addLayer(new NetheriteElytraArmorStandLayer(armorStandRenderer));
 	}
 }
