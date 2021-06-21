@@ -7,6 +7,6 @@ CurseForge : https://www.curseforge.com/minecraft/mc-mods/netherite-elytra
 
 # Branches
 
-master is the branch with no compatabilities
+master is the branch with no compatibilities
 
-curios is the branch with compatability to [Curios](https://www.curseforge.com/minecraft/mc-mods/curios)
+curios is the branch with compatibility to [Curios](https://www.curseforge.com/minecraft/mc-mods/curios)
