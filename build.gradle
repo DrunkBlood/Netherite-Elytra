@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url 'https://plugins.gradle.org/m2/' }
         jcenter()
         mavenCentral()
     }
@@ -9,42 +10,26 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 
-version = '1.0.1-1.16.2'
-group = 'drunkblood.netherelytra' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'netherelytra'
+version = "${mod_version}"
+group = "${mod_group}"
+archivesBaseName = "${mod_id}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: '20200514-1.16'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    mappings channel: 'snapshot', version: "${version_mcp}"
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
+            jvmArg "-Dmixin.env.disableRefMap=true"
 
-            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                curiouselytra {
                     source sourceSets.main
                 }
             }
@@ -52,101 +37,73 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            jvmArg "-Dmixin.env.disableRefMap=true"
 
-            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                curiouselytra {
                     source sourceSets.main
                 }
             }
         }
+    }
+}
 
-        data {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
-        }
+repositories {
+    maven {
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
     }
 }
 
 dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.16.2-33.0.5'
+    minecraft "net.minecraftforge:forge:${version_forge}"
+    compile fg.deobf("top.theillusivec4.curios:curios-forge:${version_curios}")
+    compile fg.deobf("top.theillusivec4.caelus:caelus-forge:${version_caelus}")
+//    compile fg.deobf("curse.maven:silentgear-297039:3221852")
+//    compile fg.deobf("curse.maven:curiouselytra-317716:3231248")
 
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
-
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+//    compileOnly fg.deobf("curse.maven:enderitemod-401284:3098797")
+//    compileOnly fg.deobf("curse.maven:netheriteplus-394120:3175587")
+//
+//    runtimeOnly fg.deobf("curse.maven:silentlib-242998:3165746")
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
+sourceSets {
+    main {
+        resources {
+            srcDirs += 'docs'
+        }
+    }
+}
+
 jar {
     manifest {
         attributes([
-            "Specification-Title": "netherelytra",
-            "Specification-Vendor": "netherelytrasareus",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"examplemodsareus",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Specification-Title": "netherelytra",
+                "Specification-Vendor": "netherelytrasareus",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"examplemodsareus",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
+processResources {
 
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
+    from(sourceSets.main.resources.srcDirs) {
+        include 'META-INF/mods.toml'
+        expand 'version': project.version, 'mod_id' : mod_id, 'mod_name': mod_name, 'mod_url': mod_url, 'mod_author': mod_author, 'mod_description': mod_description, 'mod_icon': mod_icon
     }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
-        //unoff mappings
-        maven {
-        	url "https://www.dogforce-games.com/maven/"
-        }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'META-INF/mods.toml'
     }
 }
