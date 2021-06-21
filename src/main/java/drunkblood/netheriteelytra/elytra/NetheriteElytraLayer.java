@@ -9,6 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import top.theillusivec4.curios.api.CuriosApi;
+
+import java.util.Optional;
+import java.util.logging.Logger;
 
 @OnlyIn(Dist.CLIENT)
 public class NetheriteElytraLayer
@@ -24,7 +29,9 @@ public class NetheriteElytraLayer
 
 	@Override
 	public boolean shouldRender(ItemStack stack, AbstractClientPlayerEntity entity) {
-		return stack.getItem() == NetheriteElytra.NETHERITE_ELYTRA.get();
+		Optional<ImmutableTriple<String, Integer, ItemStack>> equippedCurio =
+				CuriosApi.getCuriosHelper().findEquippedCurio(NetheriteElytra.NETHERITE_ELYTRA.get(), entity);
+		return equippedCurio.isPresent() || stack.getItem() == NetheriteElytra.NETHERITE_ELYTRA.get();
 	}
 
 	@Override
