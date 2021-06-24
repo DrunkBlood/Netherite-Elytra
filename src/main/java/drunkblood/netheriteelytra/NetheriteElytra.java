@@ -3,11 +3,8 @@ package drunkblood.netheriteelytra;
 import drunkblood.netheriteelytra.elytra.NetheriteElytraLayer;
 import drunkblood.netheriteelytra.item.NetheriteElytraItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.Direction;
@@ -42,7 +39,6 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -63,8 +59,6 @@ public class NetheriteElytra {
 			UUID.fromString("92b506f3-0a87-4989-a203-2ed4c7b4c1fd"), "Netherite Elytra modifier", 1.0D,
 			AttributeModifier.Operation.ADDITION);
 	private final boolean curiousElytraLoaded;
-
-
 	public NetheriteElytra() {
 		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		ITEMS.register(modBus);
