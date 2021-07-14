@@ -3,6 +3,10 @@ package drunkblood.netheriteelytra;
 import drunkblood.netheriteelytra.elytra.NetheriteElytraLayer;
 import drunkblood.netheriteelytra.item.NetheriteElytraItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -89,6 +93,11 @@ public class NetheriteElytra {
 	private void registerElytraLayer() {
 		Minecraft.getInstance().getRenderManager().getSkinMap().values()
 				.forEach(player -> player.addLayer(new NetheriteElytraLayer(player)));
+		EntityRenderer<?> entityRenderer = Minecraft.getInstance().getRenderManager().renderers.get(EntityType.ARMOR_STAND);
+		if(entityRenderer instanceof LivingRenderer){
+			LivingRenderer<?, ?> livingRenderer = (LivingRenderer<?, ?>) entityRenderer;
+			livingRenderer.addLayer(new NetheriteElytraLayer((IEntityRenderer<?, ?>) entityRenderer));
+		}
 	}
 
 	private void playerTick(final TickEvent.PlayerTickEvent evt) {
