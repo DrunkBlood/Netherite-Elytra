@@ -1,6 +1,7 @@
 package drunkblood.netheriteelytra.item;
 
 import drunkblood.netheriteelytra.NetheriteElytra;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -24,6 +25,7 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -41,11 +43,14 @@ public class NetheriteElytraItem extends ElytraItem implements ICurio {
 	 * Return whether this item is repairable in an anvil.
 	 */
 	@Override
+	@ParametersAreNonnullByDefault
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
 		return repair.getItem() == NetheriteElytra.NETHERITE_MEMBRANE.get();
 	}
 
 	@Override
+	@ParametersAreNonnullByDefault
+	@MethodsReturnNonnullByDefault
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		EquipmentSlotType equipmentslottype = MobEntity.getSlotForItemStack(itemstack);
@@ -94,11 +99,13 @@ public class NetheriteElytraItem extends ElytraItem implements ICurio {
 	}
 
 	@Override
+	@ParametersAreNonnullByDefault
 	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
 		return NetheriteElytraItem.isUsable(stack);
 	}
 
 	@Override
+	@ParametersAreNonnullByDefault
 	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
 		// Adding 1 to ticksElytraFlying prevents damage on the very first tick.
 		if (!entity.world.isRemote && (flightTicks + 1) % 25 == 0) {
