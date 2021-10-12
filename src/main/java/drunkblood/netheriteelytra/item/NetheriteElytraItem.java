@@ -3,54 +3,54 @@ package drunkblood.netheriteelytra.item;
 import javax.annotation.Nullable;
 
 import drunkblood.netheriteelytra.NetheriteElytra;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ElytraItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ElytraItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
 
 public class NetheriteElytraItem extends ElytraItem {
 
 	public NetheriteElytraItem(Properties properties) {
 		super(properties);
-		DispenserBlock.registerDispenseBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
+		DispenserBlock.registerBehavior(this, ArmorItem.DISPENSE_ITEM_BEHAVIOR);
 	}
 
 	public static boolean isUseable(ItemStack stack) {
-		return stack.getDamage() < stack.getMaxDamage() - 1;
+		return stack.getDamageValue() < stack.getMaxDamage() - 1;
 	}
 	/**
 	 * Return whether this item is repairable in an anvil.
 	 */
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
 		return repair.getItem() == NetheriteElytra.NETHERITE_MEMBRANE.get();
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		EquipmentSlotType equipmentslottype = MobEntity.getSlotForItemStack(itemstack);
-		ItemStack itemstack1 = playerIn.getItemStackFromSlot(equipmentslottype);
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+		ItemStack itemstack = playerIn.getItemInHand(handIn);
+		EquipmentSlot equipmentslottype = Mob.getEquipmentSlotForItem(itemstack);
+		ItemStack itemstack1 = playerIn.getItemBySlot(equipmentslottype);
 		if (itemstack1.isEmpty()) {
-			playerIn.setItemStackToSlot(equipmentslottype, itemstack.copy());
+			playerIn.setItemSlot(equipmentslottype, itemstack.copy());
 			itemstack.setCount(0);
-			return ActionResult.resultSuccess(itemstack);
+			return InteractionResultHolder.sidedSuccess(itemstack, worldIn.isClientSide());
 		} else {
-			return ActionResult.resultFail(itemstack);
+			return InteractionResultHolder.fail(itemstack);
 		}
 	}
 
 	@Nullable
 	@Override
-	public EquipmentSlotType getEquipmentSlot(ItemStack stack) {
-		return EquipmentSlotType.CHEST;
+	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
+		return EquipmentSlot.CHEST;
 	}
 
 	@Override
@@ -61,8 +61,8 @@ public class NetheriteElytraItem extends ElytraItem {
 	@Override
 	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
 		// Adding 1 to ticksElytraFlying prevents damage on the very first tick.
-		if (!entity.world.isRemote && (flightTicks + 1) % 25 == 0) {
-			stack.damageItem(1, entity, e -> e.sendBreakAnimation(EquipmentSlotType.CHEST));
+		if (!entity.level.isClientSide && (flightTicks + 1) % 25 == 0) {
+			stack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(EquipmentSlot.CHEST));
 		}
 		return true;
 	}

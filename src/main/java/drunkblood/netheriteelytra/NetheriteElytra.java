@@ -4,21 +4,31 @@ import drunkblood.netheriteelytra.elytra.NetheriteElytraArmorStandLayer;
 import drunkblood.netheriteelytra.elytra.NetheriteElytraLayer;
 import drunkblood.netheriteelytra.item.NetheriteElytraItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.model.ArmorStandArmorModel;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.item.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.ArmorStandArmorModel;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.entity.ArmorStandRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.logging.log4j.LogManager;
 
 @Mod(NetheriteElytra.MODID)
 public class NetheriteElytra {
@@ -27,32 +37,39 @@ public class NetheriteElytra {
 
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	public static final RegistryObject<Item> NETHERITE_ELYTRA = ITEMS.register("netherite_elytra",
-			() -> new NetheriteElytraItem(new Item.Properties().maxDamage(540).group(ItemGroup.TRANSPORTATION)/* 540 */
-					.rarity(Rarity.UNCOMMON).isImmuneToFire()));
+			() -> new NetheriteElytraItem(new Item.Properties().durability(540).tab(CreativeModeTab.TAB_TRANSPORTATION)/* 540 */
+					.rarity(Rarity.UNCOMMON).fireResistant()));
 	public static final RegistryObject<Item> NETHERITE_MEMBRANE = ITEMS.register("netherite_membrane",
-			() -> new Item(new Item.Properties().group(ItemGroup.BREWING)));
+			() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_BREWING)));
 
 	public NetheriteElytra() {
 		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		ITEMS.register(modBus);
 		modBus.addListener(this::onClientSetup);
+		modBus.addListener(this::registerElytraLayer);
 	}
 
 	private void onClientSetup(FMLClientSetupEvent event) {
-		registerElytraLayer();
 		// broken Property
-		ItemModelsProperties.registerProperty(NETHERITE_ELYTRA.get(), new ResourceLocation(MODID, "broken"),
-				(stack, arg1, arg2) -> NetheriteElytraItem.isUseable(stack) ? 0 : 1);
+		ItemProperties.register(NETHERITE_ELYTRA.get(), new ResourceLocation(MODID, "broken"),
+				(stack, arg1, arg2, arg3) -> NetheriteElytraItem.isUseable(stack) ? 0 : 1);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void registerElytraLayer() {
-		Minecraft.getInstance().getRenderManager().getSkinMap().values()
-				.forEach(player -> player.addLayer(new NetheriteElytraLayer(player)));
-		ArmorStandEntity armorStandEntity = new ArmorStandEntity(EntityType.ARMOR_STAND, Minecraft.getInstance().world);
-		LivingRenderer<ArmorStandEntity, ArmorStandArmorModel> armorStandRenderer =
-				(LivingRenderer<ArmorStandEntity, ArmorStandArmorModel>)
-						Minecraft.getInstance().getRenderManager().getRenderer(armorStandEntity);
-		armorStandRenderer.addLayer(new NetheriteElytraArmorStandLayer(armorStandRenderer));
+	private void registerElytraLayer(EntityRenderersEvent event) {
+		if(event instanceof EntityRenderersEvent.AddLayers addLayersEvent){
+			EntityModelSet entityModels = addLayersEvent.getEntityModels();
+			addLayersEvent.getSkins().forEach(s -> {
+				LivingEntityRenderer<? extends Player, ? extends EntityModel<? extends Player>> livingEntityRenderer = addLayersEvent.getSkin(s);
+				if(livingEntityRenderer instanceof PlayerRenderer playerRenderer){
+					playerRenderer.addLayer(new NetheriteElytraLayer(playerRenderer, entityModels));
+				}
+			});
+			LivingEntityRenderer<ArmorStand, ? extends EntityModel<ArmorStand>> livingEntityRenderer = addLayersEvent.getRenderer(EntityType.ARMOR_STAND);
+			if(livingEntityRenderer instanceof ArmorStandRenderer armorStandRenderer){
+				armorStandRenderer.addLayer(new NetheriteElytraArmorStandLayer(armorStandRenderer, entityModels));
+			}
+
+		}
 	}
 }
