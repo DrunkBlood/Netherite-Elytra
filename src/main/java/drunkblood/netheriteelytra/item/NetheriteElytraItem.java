@@ -1,23 +1,23 @@
 package drunkblood.netheriteelytra.item;
 
 import drunkblood.netheriteelytra.NetheriteElytra;
-import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ElytraItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ElytraItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -33,28 +33,28 @@ public class NetheriteElytraItem extends ElytraItem implements ICurio {
 
 	public NetheriteElytraItem(Properties properties) {
 		super(properties);
-		DispenserBlock.registerDispenseBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
+		DispenserBlock.registerBehavior(this, ArmorItem.DISPENSE_ITEM_BEHAVIOR);
 	}
 
 	public static boolean isUsable(ItemStack stack) {
-		return stack.getDamage() < stack.getMaxDamage() - 1;
+		return stack.getDamageValue() < stack.getMaxDamage() - 1;
 	}
 	/**
 	 * Return whether this item is repairable in an anvil.
 	 */
 	@Override
 	@ParametersAreNonnullByDefault
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
 		return repair.getItem() == NetheriteElytra.NETHERITE_MEMBRANE.get();
 	}
 
 	@Override
 	@ParametersAreNonnullByDefault
 	@MethodsReturnNonnullByDefault
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		EquipmentSlotType equipmentslottype = MobEntity.getSlotForItemStack(itemstack);
-		ItemStack armorStack = playerIn.getItemStackFromSlot(equipmentslottype);
+	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
+		ItemStack itemstack = playerIn.getItemInHand(handIn);
+		EquipmentSlot equipmentSlot = Mob.getEquipmentSlotForItem(itemstack);
+		ItemStack armorStack = playerIn.getItemBySlot(equipmentSlot);
 		LazyOptional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosHelper().getCuriosHandler(playerIn);
 		AtomicBoolean replacedCurio = new AtomicBoolean(false);
 		curiosHandler.ifPresent(handler ->{
@@ -74,28 +74,28 @@ public class NetheriteElytraItem extends ElytraItem implements ICurio {
 			}
 		});
 		if(replacedCurio.get()){
-			playerIn.world.playSound(null, new BlockPos(playerIn.getPositionVec()),
-					SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-			return ActionResult.resultSuccess(itemstack);
+			playerIn.level.playSound(null, new BlockPos(playerIn.position()),
+					SoundEvents.ARMOR_EQUIP_ELYTRA, SoundSource.NEUTRAL, 1.0F, 1.0F);
+			return InteractionResultHolder.success(itemstack);
 		}
 		else if (armorStack.isEmpty()) {
 			if(CuriosApi.getCuriosHelper().findEquippedCurio(itemstack.getItem(), playerIn).isPresent()){
-				return ActionResult.resultFail(itemstack);
+				return InteractionResultHolder.fail(itemstack);
 			}
-			playerIn.setItemStackToSlot(equipmentslottype, itemstack.copy());
+			playerIn.setItemSlot(equipmentSlot, itemstack.copy());
 			itemstack.setCount(0);
-			playerIn.world.playSound(null, new BlockPos(playerIn.getPositionVec()),
-					SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-			return ActionResult.resultSuccess(itemstack);
+			playerIn.level.playSound(null, new BlockPos(playerIn.position()),
+					SoundEvents.ARMOR_EQUIP_ELYTRA, SoundSource.NEUTRAL, 1.0F, 1.0F);
+			return InteractionResultHolder.success(itemstack);
 		} else {
-			return ActionResult.resultFail(itemstack);
+			return InteractionResultHolder.fail(itemstack);
 		}
 	}
 
 	@Nullable
 	@Override
-	public EquipmentSlotType getEquipmentSlot(ItemStack stack) {
-		return EquipmentSlotType.CHEST;
+	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
+		return EquipmentSlot.CHEST;
 	}
 
 	@Override
@@ -108,17 +108,23 @@ public class NetheriteElytraItem extends ElytraItem implements ICurio {
 	@ParametersAreNonnullByDefault
 	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
 		// Adding 1 to ticksElytraFlying prevents damage on the very first tick.
-		if (!entity.world.isRemote && (flightTicks + 1) % 25 == 0) {
-			stack.damageItem(1, entity, e -> e.sendBreakAnimation(EquipmentSlotType.CHEST));
+		if (!entity.level.isClientSide() && (flightTicks + 1) % 25 == 0) {
+			stack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(EquipmentSlot.CHEST));
 		}
 		return true;
+	}
+
+	@Override
+	public ItemStack getStack() {
+		// TODO
+		return new ItemStack(this);
 	}
 
 	@Override
 	public void curioTick(String identifier, int index, LivingEntity livingEntity) {
 		ICurio.super.curioTick(identifier, index, livingEntity);
 		Integer ticksFlying = ObfuscationReflectionHelper
-				.getPrivateValue(LivingEntity.class, livingEntity, "field_184629_bo");
+				.getPrivateValue(LivingEntity.class, livingEntity, "fallFlyTicks");
 		LazyOptional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosHelper().getCuriosHandler(livingEntity);
 		curiosHandler.ifPresent(handler ->{
 			Map<String, ICurioStacksHandler> curios = handler.getCurios();

@@ -1,24 +1,26 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url 'https://plugins.gradle.org/m2/' }
-        jcenter()
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
-version = "${mod_version}"
-group = "${mod_group}"
+version = mod_version
+group = mod_group
 archivesBaseName = "${mod_id}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-    mappings channel: 'snapshot', version: "${version_mcp}"
+    mappings channel: 'official', version: "${version_mcp}"
 
     runs {
         client {
@@ -63,8 +65,10 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${version_forge}"
-    compile fg.deobf("top.theillusivec4.curios:curios-forge:${version_curios}")
-    compile fg.deobf("top.theillusivec4.caelus:caelus-forge:${version_caelus}")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${version_curios}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${version_curios}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:${version_caelus}")
+    compileOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:${version_caelus}")
 //    compile fg.deobf("curse.maven:silentgear-297039:3221852")
 //    compile fg.deobf("curse.maven:curiouselytra-317716:3231248")
 
@@ -97,13 +101,9 @@ jar {
 }
 
 processResources {
-
+    duplicatesStrategy = 'include'
     from(sourceSets.main.resources.srcDirs) {
         include 'META-INF/mods.toml'
         expand 'version': project.version, 'mod_id' : mod_id, 'mod_name': mod_name, 'mod_url': mod_url, 'mod_author': mod_author, 'mod_description': mod_description, 'mod_icon': mod_icon
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
     }
 }
