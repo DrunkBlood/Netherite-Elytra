@@ -25,6 +25,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -46,7 +47,7 @@ public class NetheriteElytra {
 		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		ITEMS.register(modBus);
 		modBus.addListener(this::onClientSetup);
-		modBus.addListener(this::registerElytraLayer);
+		if(FMLEnvironment.dist.isClient()) modBus.addListener(this::registerElytraLayer);
 	}
 
 	private void onClientSetup(FMLClientSetupEvent event) {
