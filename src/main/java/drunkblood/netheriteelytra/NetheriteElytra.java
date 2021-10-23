@@ -40,6 +40,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -80,7 +81,7 @@ public class NetheriteElytra {
 		modBus.addListener(this::onClientSetup);
 		modBus.addListener(this::onCommonSetup);
 		modBus.addListener(this::enqueue);
-		modBus.addListener(this::registerElytraLayer);
+		if(FMLEnvironment.dist.isClient()) modBus.addListener(this::registerElytraLayer);
 		curiousElytraLoaded = ModList.get().isLoaded("curiouselytra");
 	}
 

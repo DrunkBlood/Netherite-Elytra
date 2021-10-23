@@ -8,10 +8,16 @@
   	"1.0.0": "inital port to 1.16.2",
   	"1.0.1": "added German and Simplified Chinese support"
   },
+  "1.17.1": {
+    "1.0.0" : "initial port to 1.17.1",
+    "1.0.1" : "fixed a server bug"
+  },
   "promos": {
     "1.16.1-latest": "1.0.1",
     "1.16.1-recommended": "1.0.1",
     "1.16.2-latest":"1.0.1",
-    "1.16.2-recommended": "1.0.1"
+    "1.16.2-recommended": "1.0.1",
+    "1.17.1-latest":"1.0.1",
+    "1.17.1-recommended": "1.0.1"
   }
 }
