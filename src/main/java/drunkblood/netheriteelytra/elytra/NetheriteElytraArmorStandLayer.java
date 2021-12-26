@@ -1,13 +1,9 @@
 package drunkblood.netheriteelytra.elytra;
 
 import drunkblood.netheriteelytra.NetheriteElytra;
-
 import net.minecraft.client.model.ArmorStandArmorModel;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.entity.ArmorStandRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.ElytraLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.decoration.ArmorStand;

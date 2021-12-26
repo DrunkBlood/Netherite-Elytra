@@ -1,7 +1,5 @@
 package drunkblood.netheriteelytra.item;
 
-import javax.annotation.Nullable;
-
 import drunkblood.netheriteelytra.NetheriteElytra;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,6 +12,8 @@ import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+
+import javax.annotation.Nullable;
 
 public class NetheriteElytraItem extends ElytraItem {
 

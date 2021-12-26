@@ -3,8 +3,6 @@ package drunkblood.netheriteelytra;
 import drunkblood.netheriteelytra.elytra.NetheriteElytraArmorStandLayer;
 import drunkblood.netheriteelytra.elytra.NetheriteElytraLayer;
 import drunkblood.netheriteelytra.item.NetheriteElytraItem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ArmorStandArmorModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.entity.ArmorStandRenderer;
@@ -26,15 +24,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.logging.log4j.LogManager;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod(NetheriteElytra.MODID)
 public class NetheriteElytra {
 	public static final String MODID = "netherelytra";
-	public static final String NAME = "Netherite Elytra";
 
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	public static final RegistryObject<Item> NETHERITE_ELYTRA = ITEMS.register("netherite_elytra",
