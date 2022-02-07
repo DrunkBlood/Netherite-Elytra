@@ -15,7 +15,7 @@ ${mod_description}
 [[dependencies.netherelytra]]
     modId="forge"
     mandatory=true
-    versionRange="[39,)"
+    versionRange="[39.0.66,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.netherelytra]]
@@ -33,6 +33,6 @@ ${mod_description}
 [[dependencies.netherelytra]]
     modId="curios"
     mandatory=true
-    versionRange="[1.18.1-5.0.4.1,)"
+    versionRange="[1.18.1-5.0.6.0,)"
     ordering="NONE"
     side="BOTH"
