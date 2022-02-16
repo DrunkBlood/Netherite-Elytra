@@ -95,7 +95,7 @@ jar {
         ])
     }
 }
-
+jar.finalizedBy('reobfJar')
 processResources {
 
     from(sourceSets.main.resources.srcDirs) {
