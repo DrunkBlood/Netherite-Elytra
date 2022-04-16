@@ -99,7 +99,7 @@ jar {
         ])
     }
 }
-
+jar.finalizedBy('reobfJar')
 processResources {
     duplicatesStrategy = 'include'
     from(sourceSets.main.resources.srcDirs) {

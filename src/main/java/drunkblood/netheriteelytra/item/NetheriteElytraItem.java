@@ -123,8 +123,7 @@ public class NetheriteElytraItem extends ElytraItem implements ICurio {
 	@Override
 	public void curioTick(String identifier, int index, LivingEntity livingEntity) {
 		ICurio.super.curioTick(identifier, index, livingEntity);
-		Integer ticksFlying = ObfuscationReflectionHelper
-				.getPrivateValue(LivingEntity.class, livingEntity, "fallFlyTicks");
+		Integer ticksFlying = livingEntity.getFallFlyingTicks();
 		LazyOptional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosHelper().getCuriosHandler(livingEntity);
 		curiosHandler.ifPresent(handler ->{
 			Map<String, ICurioStacksHandler> curios = handler.getCurios();
