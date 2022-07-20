@@ -15,24 +15,24 @@ ${mod_description}
 [[dependencies.netherelytra]]
     modId="forge"
     mandatory=true
-    versionRange="[39.0.66,)"
+    versionRange="[31,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.netherelytra]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.2]"
+    versionRange="[1.19]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.netherelytra]]
     modId="caelus"
     mandatory=true
-    versionRange="[1.18.1-3.0.0.2,)"
+    versionRange="[1.19-3.0.0.3,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.netherelytra]]
     modId="curios"
     mandatory=true
-    versionRange="[1.18.2-5.0.7.0,)"
+    versionRange="[1.19-5.1.0.4,)"
     ordering="NONE"
     side="BOTH"
