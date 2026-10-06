@@ -19,7 +19,6 @@
         <mapEntry key="target" value="fmluserdevclient"/>
     </mapAttribute>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
-    <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.buildship.core.classpathprovider"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.minecraftforge.userdev.LaunchTesting"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="Netherite-Elytra"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Netherite-Elytra"/>
