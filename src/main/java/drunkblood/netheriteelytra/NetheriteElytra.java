@@ -1,5 +1,6 @@
 package drunkblood.netheriteelytra;
 
+import drunkblood.netheriteelytra.datagen.ModCuriosProvider;
 import drunkblood.netheriteelytra.datagen.ModEquipmentAssetProvider;
 import drunkblood.netheriteelytra.datagen.ModModelProvider;
 import drunkblood.netheriteelytra.datagen.ModRecipeProvider;
@@ -31,7 +32,7 @@ public class NetheriteElytra {
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 	public static final DeferredItem<Item> NETHERITE_MEMBRANE = ITEMS.registerSimpleItem("netherite_membrane");
 	public static final DeferredItem<Item> NETHERITE_ELYTRA = ITEMS.registerItem("netherite_elytra",
-			(properties) -> new Item(properties
+			(properties) -> new NetheriteEyltraItem(properties
 				.durability(720)
 				.rarity(Rarity.EPIC)
 				.fireResistant()
@@ -61,5 +62,6 @@ public class NetheriteElytra {
 		event.createProvider(PolishLanguageProvider::new);
 		event.createProvider(RussianLanguageProvider::new);
 		event.createProvider(ModEquipmentAssetProvider::new);
+		event.addProvider(new ModCuriosProvider(event.getGenerator().getPackOutput(), event.getLookupProvider()));
 	}
 }

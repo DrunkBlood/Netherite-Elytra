@@ -134,6 +134,7 @@ dependencies {
 
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
+    implementation files("libs/elytraslot-neoforge-10.0.1+1.21.4.jar")
 
     // Example project dependency using a sister or child project:
     // implementation project(":myproject")
@@ -145,6 +146,9 @@ dependencies {
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     // Use the full Curios API jar at runtime
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+
+    runtimeOnly "com.illusivesoulworks.caelus:caelus-neoforge:${caelus_version}"
+    compileOnly "com.illusivesoulworks.caelus:caelus-neoforge:${caelus_version}:api"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -159,7 +163,9 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_license            : mod_license,
             mod_version            : mod_version,
             mod_authors            : mod_authors,
-            mod_description        : mod_description
+            mod_description        : mod_description,
+            curios_version_range   : curios_version_range,
+            elytra_slot_version_range : elytra_slot_version_range,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
