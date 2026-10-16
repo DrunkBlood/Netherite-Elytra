@@ -7,10 +7,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
-public class NetheriteEyltraItem extends Item implements ICurioItem {
+public class NetheriteEyltraItem extends Item{
     public NetheriteEyltraItem(Properties properties) {
         super(properties);
     }

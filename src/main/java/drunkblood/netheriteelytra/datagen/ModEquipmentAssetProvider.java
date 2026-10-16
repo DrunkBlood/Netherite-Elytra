@@ -4,8 +4,8 @@ import drunkblood.netheriteelytra.NetheriteElytra;
 import net.minecraft.client.data.models.EquipmentAssetProvider;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,7 @@ public class ModEquipmentAssetProvider extends EquipmentAssetProvider {
                 NetheriteElytra.NETHERITE_ELYTRA_ASSET,
                 EquipmentClientInfo.builder()
                         .addLayers(
-                                EquipmentClientInfo.LayerType.WINGS, new EquipmentClientInfo.Layer(ResourceLocation.fromNamespaceAndPath(NetheriteElytra.MODID, "netherite_elytra"), Optional.empty(), true)
+                                EquipmentClientInfo.LayerType.WINGS, new EquipmentClientInfo.Layer(Identifier.fromNamespaceAndPath(NetheriteElytra.MODID, "netherite_elytra"), Optional.empty(), true)
                         )
                         .build()
         );
