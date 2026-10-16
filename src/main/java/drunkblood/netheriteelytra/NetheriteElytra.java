@@ -1,6 +1,5 @@
 package drunkblood.netheriteelytra;
 
-import drunkblood.netheriteelytra.datagen.ModCuriosProvider;
 import drunkblood.netheriteelytra.datagen.ModEquipmentAssetProvider;
 import drunkblood.netheriteelytra.datagen.ModModelProvider;
 import drunkblood.netheriteelytra.datagen.ModRecipeProvider;
@@ -13,7 +12,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
@@ -21,12 +19,10 @@ import net.minecraft.world.item.equipment.Equippable;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import top.theillusivec4.curios.api.CuriosCapability;
 
 @Mod(NetheriteElytra.MODID)
 public class NetheriteElytra {
@@ -38,7 +34,7 @@ public class NetheriteElytra {
 	public static final DeferredItem<Item> NETHERITE_MEMBRANE = ITEMS.registerSimpleItem("netherite_membrane");
 	public static ResourceKey<Item> NETHERITE_ELYTRA_ID = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MODID, "netherite_elytra"));
 	public static final DeferredItem<Item> NETHERITE_ELYTRA = ITEMS.registerItem("netherite_elytra",
-			(properties) -> new NetheriteEyltraItem(properties
+			(properties) -> new Item(properties
 				.durability(720)
 				.rarity(Rarity.EPIC)
 				.fireResistant()
@@ -58,13 +54,6 @@ public class NetheriteElytra {
 		ITEMS.register(modEventBus);
 		modEventBus.addListener(this::gatherData);
 		modEventBus.addListener(this::gatherDataRegistry);
-		modEventBus.addListener(this::registerCapabilities);
-	}
-
-	private void registerCapabilities(RegisterCapabilitiesEvent event){
-		event.registerItem(CuriosCapability.ITEM,
-				(stack, context) -> new CanElytraFlyCapability(stack),
-				Items.ELYTRA, NETHERITE_ELYTRA.get());
 	}
 
 	private void gatherDataRegistry(GatherDataRegistryEntriesEvent event){
@@ -79,6 +68,5 @@ public class NetheriteElytra {
 		event.createProvider(PolishLanguageProvider::new);
 		event.createProvider(RussianLanguageProvider::new);
 		event.createProvider(ModEquipmentAssetProvider::new);
-		event.addProvider(new ModCuriosProvider(event.getGenerator().getPackOutput(), event.getReloadableLookupProvider()));
 	}
 }
